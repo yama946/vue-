@@ -20,7 +20,7 @@ export default {
 
 <style lang="less">
 // 去除默认样式，应用到所有模板，并非仅仅当前模板吗
-html,body,h3{
+html,body,h3,p{
   margin: 0%;
   padding: 0%;
 }

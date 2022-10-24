@@ -1,7 +1,7 @@
 <template>
 <div class="header-container">
     <div class="l-content">
-        <el-button icon="el-icon-menu" size="mini"></el-button>
+        <el-button @click="handleMenu" icon="el-icon-menu" size="mini"></el-button>
         <!-- 面包屑 -->
         <span class="text">首页</span>
     </div>
@@ -33,14 +33,17 @@ export default {
 
         };
     },
+    //方法集合
+    methods: {
+        //修改store中，菜单的状态
+        handleMenu(){
+            this.$store.commit('collapseMenu');
+        }
+    },
     //计算属性 类似于 data 概念
     computed: {},
     //监控 data 中的数据变化
     watch: {},
-    //方法集合
-    methods: {
-
-    },
     //生命周期 - 创建完成（可以访问当前 this 实例）
     created() {
 

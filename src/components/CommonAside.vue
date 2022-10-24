@@ -1,6 +1,6 @@
 <template>
 <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-    <h3>通用后台管理系统</h3>
+    <h3>{{ isCollapse ? '后台':'通用后台管理系统' }}</h3>
     <el-menu-item v-on:click="clickMenu(item)" v-for="item in noChildren" :key="item.name" :index="item.label">
         <i :class="`el-icon-${item.icon}`"></i>
         <span slot="title">{{item.label}}</span>
@@ -30,7 +30,7 @@ export default {
     data() {
         //这里存放数据
         return {
-            isCollapse: false,
+            // isCollapse: false,
             menuData: [{
                     path: "/",
                     name: "home",
@@ -85,7 +85,10 @@ export default {
         hasChildren() {
             return this.menuData.filter((item) => item.children);
         },
-
+        //从store中获取数据
+        isCollapse () {
+            return this.$store.state.tab.isCollapse;
+        }
     },
     //监控 data 中的数据变化
     watch: {},
@@ -152,4 +155,12 @@ export default {
        font-weight: 400;
     }
 }
+</style>
+
+
+<style lang="less" scoped>
+    .el-menu {
+        // 去除白边
+        border-right: none;
+    }
 </style>

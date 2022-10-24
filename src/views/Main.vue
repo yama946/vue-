@@ -1,6 +1,7 @@
 <template>
     <el-container>
-        <el-aside width="200px">
+        <!-- <el-aside width="200px">  这里的200px导致，当点击缩放菜单时，无法占满 -->
+        <el-aside width="auto">
             <!-- 映射侧边栏组件 -->
             <common-aside></common-aside>
         </el-aside>
