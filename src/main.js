@@ -6,6 +6,8 @@ import 'element-ui/lib/theme-chalk/index.css';
 import router from './router'
 import store from './store/index'
 
+import './api/mock'
+
 Vue.config.productionTip = false
 //安装element-ui，全局引入
 Vue.use(ElementUI);

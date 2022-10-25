@@ -1,7 +1,7 @@
 <template>
 <el-row>
     <!-- 左侧部分 -->
-    <el-col :span="8">
+    <el-col :span="8" style="padding-right: 10px">
         <el-card class="box-card">
             <div class="user">
                 <img src="../assets/images/user.png" alt="">
@@ -34,15 +34,23 @@
         </el-card>
     </el-col>
     <!-- 右侧部分，将页面宽度看成24个栅格，16个栅格为2/3 -->
-    <el-col :span="16">
+    <el-col :span="16" style="padding-left: 10px">
         <div class="num">
-            <el-card v-for="item in countData" :key="item.name" :body-style="{ display:'flex',padding: 0}">
-                <i class="icon" :class="`el-icon-${item.icon}`" v-bind:style="{ background: item.color}"></i>
+            <el-card v-for="item in countData" :key="item.name" :body-style="{ display: 'flex', padding: 0 }">
+                <i class="icon" :class="`el-icon-${item.icon}`" v-bind:style="{ background: item.color }"></i>
                 <div class="detail">
                     <p class="price">￥{{item.value}}</p>
                     <p class="desc">{{item.name}}</p>
                 </div>
             </el-card>
+        </div>
+        <el-card style="height: 280px">
+            <!-- 折线图区域 -->
+        </el-card>
+        <!-- 当前div作为一个容器 -->
+        <div class="graph">
+            <el-card style="height: 260px"></el-card>
+            <el-card style="height: 260px"></el-card>
         </div>
     </el-col>
 </el-row>
@@ -52,10 +60,25 @@
 //这里可以导入其他文件（比如：组件，工具 js，第三方插件 js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 
+//通过解构的方式，获取getData请求接口返回的对象
+import { getData } from '../api/index'
+
 export default {
     //import 引入的组件需要注入到对象中才能使用
     components: {},
-    props: {},
+    //生命周期 - 挂载完成（可以访问 DOM 元素）
+    mounted() {
+        //使用请求接口获取返回的结果数据
+        // getData().then((data)=>{
+        //     //由于数据结构层级较深，我们可以使用解构较少层级
+        //     console.log(data);
+        // })
+        getData().then(({ data }) => {
+            const { tableData } = data.data;
+            console.log(tableData);
+            this.tableData = tableData;
+        })
+    },
     data() {
         //这里存放数据
         return {
@@ -143,7 +166,9 @@ export default {
         };
     },
     //计算属性 类似于 data 概念
-    computed: {},
+    computed: {
+
+    },
     //监控 data 中的数据变化
     watch: {},
     //方法集合
@@ -152,10 +177,6 @@ export default {
     },
     //生命周期 - 创建完成（可以访问当前 this 实例）
     created() {
-
-    },
-    //生命周期 - 挂载完成（可以访问 DOM 元素）
-    mounted() {
 
     },
     beforeCreate() {}, //生命周期 - 创建之前
@@ -209,11 +230,13 @@ export default {
         }
     }
 }
-.num{
+
+.num {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    .icon{
+
+    .icon {
         width: 80px;
         height: 80px;
         font-size: 30px;
@@ -221,27 +244,42 @@ export default {
         line-height: 80px;
         color: #fff;
     }
-    .detail{
+
+    .detail {
         margin-left: 15px;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        .price{
+
+        .price {
             font-size: 30px;
             margin-bottom: 10px;
             line-height: 30px;
             height: 30px;
         }
-        .desc{
+
+        .desc {
             font-size: 14px;
             color: #999;
             text-align: center;
         }
     }
+
     // 这个选择器是页面自动生成的，当前页面没有定义该class属性
-    .el-card{
+    .el-card {
         width: 32%;
         margin-bottom: 20px;
+    }
+}
+
+// 饼状图与柱状图容器布局
+.graph {
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    // 这里的el-card属性也是页面自动生成的，当前也页面并没有定义
+    .el-card{
+        width: 48%;
     }
 }
 </style>
