@@ -28,14 +28,22 @@
                 <el-table-column prop="totalBuy" label="总销量">
                 </el-table-column> -->
                 <!-- 使用vue循环，进行优化，动态生成 -->
-                <el-table-column v-for="(value,name) in tableLabel" :key="name" :prop="name" :label="value">
+                <el-table-column v-for="(value, name) in tableLabel" :key="name" :prop="name" :label="value">
                 </el-table-column>
             </el-table>
         </el-card>
     </el-col>
     <!-- 右侧部分，将页面宽度看成24个栅格，16个栅格为2/3 -->
     <el-col :span="16">
-        <div class="grid-content bg-purple-light"></div>
+        <div class="num">
+            <el-card v-for="item in countData" :key="item.name" :body-style="{ display:'flex',padding: 0}">
+                <i class="icon" :class="`el-icon-${item.icon}`" v-bind:style="{ background: item.color}"></i>
+                <div class="detail">
+                    <p class="price">￥{{item.value}}</p>
+                    <p class="desc">{{item.name}}</p>
+                </div>
+            </el-card>
+        </div>
     </el-col>
 </el-row>
 </template>
@@ -89,12 +97,49 @@ export default {
                     totalBuy: 800
                 }
             ],
-            tableLabel:{
-                name:'课程',
-                todayBuy:'今日购买',
+            tableLabel: {
+                name: '课程',
+                todayBuy: '今日购买',
                 monthBuy: '本月购买',
                 totalBuy: '总购买',
-            }
+            },
+            countData: [{
+                    name: "今日支付订单",
+                    value: 1234,
+                    icon: "success",
+                    color: "#2ec7c9",
+                },
+                {
+                    name: "今日收藏订单",
+                    value: 210,
+                    icon: "star-on",
+                    color: "#ffb980",
+                },
+                {
+                    name: "今日未支付订单",
+                    value: 1234,
+                    icon: "s-goods",
+                    color: "#5ab1ef",
+                },
+                {
+                    name: "本月支付订单",
+                    value: 1234,
+                    icon: "success",
+                    color: "#2ec7c9",
+                },
+                {
+                    name: "本月收藏订单",
+                    value: 210,
+                    icon: "star-on",
+                    color: "#ffb980",
+                },
+                {
+                    name: "本月未支付订单",
+                    value: 1234,
+                    icon: "s-goods",
+                    color: "#5ab1ef",
+                },
+            ]
         };
     },
     //计算属性 类似于 data 概念
@@ -162,6 +207,41 @@ export default {
             color: #666666;
             margin-left: 60px;
         }
+    }
+}
+.num{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .icon{
+        width: 80px;
+        height: 80px;
+        font-size: 30px;
+        text-align: center;
+        line-height: 80px;
+        color: #fff;
+    }
+    .detail{
+        margin-left: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .price{
+            font-size: 30px;
+            margin-bottom: 10px;
+            line-height: 30px;
+            height: 30px;
+        }
+        .desc{
+            font-size: 14px;
+            color: #999;
+            text-align: center;
+        }
+    }
+    // 这个选择器是页面自动生成的，当前页面没有定义该class属性
+    .el-card{
+        width: 32%;
+        margin-bottom: 20px;
     }
 }
 </style>
