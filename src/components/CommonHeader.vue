@@ -3,12 +3,16 @@
     <div class="l-content">
         <el-button @click="handleMenu" icon="el-icon-menu" size="mini"></el-button>
         <!-- 面包屑 -->
-        <span class="text">首页</span>
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item v-for="item in tags" :key="item.path" :to="{ path: item.path }">
+                {{ item.label }}
+            </el-breadcrumb-item>
+        </el-breadcrumb>
     </div>
     <div class="r-content">
         <el-dropdown>
             <span class="el-dropdown-link">
-                <img class="user"  src="../assets/images/user.png" alt="用户图片">
+                <img class="user" src="../assets/images/user.png" alt="用户图片">
             </span>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>个人中心</el-dropdown-item>
@@ -22,11 +26,11 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具 js，第三方插件 js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
+//使用vuex的辅助函数，从state中获取数据
+import { mapState } from 'vuex';
 
 export default {
     //import 引入的组件需要注入到对象中才能使用
-    components: {},
-    props: {},
     data() {
         //这里存放数据
         return {
@@ -36,29 +40,20 @@ export default {
     //方法集合
     methods: {
         //修改store中，菜单的状态
-        handleMenu(){
+        handleMenu() {
             this.$store.commit('collapseMenu');
         }
     },
-    //计算属性 类似于 data 概念
-    computed: {},
-    //监控 data 中的数据变化
-    watch: {},
-    //生命周期 - 创建完成（可以访问当前 this 实例）
-    created() {
-
+    //计算属性
+    computed: {
+        ...mapState({
+            tags: state => state.tab.tabsList
+        })
     },
-    //生命周期 - 挂载完成（可以访问 DOM 元素）
+    //通过扩展对象解构，就获得了tag
     mounted() {
-
-    },
-    beforeCreate() {}, //生命周期 - 创建之前
-    beforeMount() {}, //生命周期 - 挂载之前
-    beforeUpdate() {}, //生命周期 - 更新之前
-    updated() {}, //生命周期 - 更新之后
-    beforeDestroy() {}, //生命周期 - 销毁之前
-    destroyed() {}, //生命周期 - 销毁完成
-    activated() {}, //如果页面有 keep-alive 缓存功能，这个函数会触发
+        console.log(this.tags, 'tags');
+    }
 }
 </script>
 
@@ -77,12 +72,36 @@ export default {
         margin-left: 14px;
     }
 
-    .r-content{
-        .user{
+    .r-content {
+        .user {
             width: 40px;
             height: 40px;
             border-radius: 50%;
         }
+    }
+
+    .l-content {
+        display: flex;
+        align-items: center;
+        // element-ui自动生成的class属性选择器
+
+        /deep/.el-breadcrumb__item {
+            .el-breadcrumb__inner {
+                font-weight: normal;
+
+                //&表示并且，同时满足两个选择器
+                &.is-link {
+                    color: #fff;
+                }
+            }
+
+            &:last-child {
+                .el-breadcrumb__inner {
+                    color:chocolate;
+                }
+            }
+        }
+
     }
 }
 </style>

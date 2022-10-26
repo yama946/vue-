@@ -46,11 +46,16 @@
         </div>
         <el-card style="height: 280px">
             <!-- 折线图区域 -->
+            <div ref="echarts1" style="height: 280px"></div>
         </el-card>
         <!-- 当前div作为一个容器 -->
         <div class="graph">
-            <el-card style="height: 260px"></el-card>
-            <el-card style="height: 260px"></el-card>
+            <el-card style="height: 260px">
+                <div ref="echarts2" style="height: 260px"></div>
+            </el-card>
+            <el-card style="height: 260px">
+                <div ref="echarts3" style="height: 240px"></div>
+            </el-card>
         </div>
     </el-col>
 </el-row>
@@ -63,6 +68,8 @@
 //通过解构的方式，获取getData请求接口返回的对象
 import { getData } from '../api/index'
 
+import * as echarts from 'echarts';
+
 export default {
     //import 引入的组件需要注入到对象中才能使用
     components: {},
@@ -74,10 +81,123 @@ export default {
         //     console.log(data);
         // })
         getData().then(({ data }) => {
+            console.log(data);
             const { tableData } = data.data;
             console.log(tableData);
             this.tableData = tableData;
-        })
+            //在mounted生命周期函数中初始化echats实例
+            // 基于准备好的dom，初始化echarts实例
+            //使用vue中ref特性来获取dom节点
+            //折线图
+            var echarts1 = echarts.init(this.$refs.echarts1);
+            //指定图标的配置项和数据
+            var echarts1Option = {
+                //提示框，鼠标右侧，不配置不显示
+                tooltip: {},
+                //y轴坐标
+                yAxis: {},
+            };
+            //处理数据xAxis
+            const { orderData } = data.data;
+            //使用es6方法获取枚举值
+            const xAxis = Object.keys(orderData.data[0]);
+            echarts1Option.xAxis = {
+                data: xAxis
+            };
+            echarts1Option.legend = {
+                data: xAxis
+            };
+            console.log(xAxis);
+            echarts1Option.series = [];
+            xAxis.forEach(key => {
+                echarts1Option.series.push({
+                    name: key,
+                    data: orderData.data.map(item => item[key]),
+                    type: 'line'
+                })
+            });
+            console.log(echarts1Option)
+            //使用指定的配置项和数据显示图表
+            echarts1.setOption(echarts1Option);
+
+            //柱状图
+            const echarts2 = echarts.init(this.$refs.echarts2);
+            const echarts2Option = {
+                legend: {
+                    // 图例文字颜色
+                    textStyle: {
+                        color: "#333",
+                    },
+                },
+                grid: {
+                    left: "20%",
+                },
+                // 提示框
+                tooltip: {
+                    trigger: "axis",
+                },
+                xAxis: {
+                    type: "category", // 类目轴
+                    data: [],
+                    axisLine: {
+                        lineStyle: {
+                            color: "#17b3a3",
+                        },
+                    },
+                    axisLabel: {
+                        interval: 0,
+                        color: "#333",
+                    },
+                },
+                yAxis: [{
+                    type: "value",
+                    axisLine: {
+                        lineStyle: {
+                            color: "#17b3a3",
+                        },
+                    },
+                }, ],
+                color: ["#2ec7c9", "#b6a2de"],
+                series: [],
+            }
+            const { userData } = data.data;
+            echarts2Option.xAxis.data = userData.map(value => value.date);
+            echarts2Option.series = [{
+                    name: '新增用户',
+                    type: 'bar',
+                    data: userData.map(value => value.new)
+                },
+                {
+                    name: '活跃用户',
+                    type: 'bar',
+                    data: userData.map(value => value.active)
+                }
+            ]
+            echarts2.setOption(echarts2Option);
+
+            //饼状图
+            const { videoData } = data.data;
+            const echarts3 = echarts.init(this.$refs.echarts3);
+            const echarts3Option = {
+                tooltip: {
+                    trigger: "item",
+                },
+                color: [
+                    "#0f78f4",
+                    "#dd536b",
+                    "#9462e5",
+                    "#a6a6a6",
+                    "#e1bb22",
+                    "#39c362",
+                    "#3ed1cf",
+                ],
+                series: [{
+                    type:'pie',
+                    data:videoData
+                }],
+            }
+            echarts3.setOption(echarts3Option);
+        });
     },
     data() {
         //这里存放数据
@@ -165,27 +285,6 @@ export default {
             ]
         };
     },
-    //计算属性 类似于 data 概念
-    computed: {
-
-    },
-    //监控 data 中的数据变化
-    watch: {},
-    //方法集合
-    methods: {
-
-    },
-    //生命周期 - 创建完成（可以访问当前 this 实例）
-    created() {
-
-    },
-    beforeCreate() {}, //生命周期 - 创建之前
-    beforeMount() {}, //生命周期 - 挂载之前
-    beforeUpdate() {}, //生命周期 - 更新之前
-    updated() {}, //生命周期 - 更新之后
-    beforeDestroy() {}, //生命周期 - 销毁之前
-    destroyed() {}, //生命周期 - 销毁完成
-    activated() {}, //如果页面有 keep-alive 缓存功能，这个函数会触发
 }
 </script>
 
@@ -277,8 +376,9 @@ export default {
     margin-top: 18px;
     display: flex;
     justify-content: space-between;
+
     // 这里的el-card属性也是页面自动生成的，当前也页面并没有定义
-    .el-card{
+    .el-card {
         width: 48%;
     }
 }

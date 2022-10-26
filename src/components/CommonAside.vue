@@ -90,8 +90,6 @@ export default {
             return this.$store.state.tab.isCollapse;
         }
     },
-    //监控 data 中的数据变化
-    watch: {},
     //方法集合
     methods: {
         handleOpen(key, keyPath) {
@@ -121,19 +119,11 @@ export default {
                 console.log(this.$route.path);//输出是uri：/home
                 this.$router.push(item.path);
             }
+            //点击菜单，触发面包屑数据更改，通过mutation方法修改数据
+            //其中第二个参数，就是传递的参数
+            this.$store.commit('selectMenu',item);
         }
     },
-    //生命周期 - 创建完成（可以访问当前 this 实例）
-    created() {},
-    //生命周期 - 挂载完成（可以访问 DOM 元素）
-    mounted() {},
-    beforeCreate() {}, //生命周期 - 创建之前
-    beforeMount() {}, //生命周期 - 挂载之前
-    beforeUpdate() {}, //生命周期 - 更新之前
-    updated() {}, //生命周期 - 更新之后
-    beforeDestroy() {}, //生命周期 - 销毁之前
-    destroyed() {}, //生命周期 - 销毁完成
-    activated() {}, //如果页面有 keep-alive 缓存功能，这个函数会触发
 };
 </script>
 
@@ -142,11 +132,13 @@ export default {
 // scoped，表示当前样式只使用与当前模板
 .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
-    min-height: 400px;
+    // min-height: 400px;
+    min-height: 100vh;
 }
 // 这个el-menu属性值的来源是哪里，在哪里定义，而不是到浏览器控制台获取
 .el-menu {
-    height: 100vh;
+    // height: 100vh;
+    height: 100%;
     h3 {
        color: #fff;
        text-align: center;
