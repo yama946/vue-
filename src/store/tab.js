@@ -33,6 +33,14 @@ export default {
                     state.tabsList.push(val);
                 }
             }
+        },
+        // 删除指定的tag数据
+        closeTag(state,item){
+            console.log(item,'item');
+            //获取要删除的标签在store数据中的索引index
+            const index = state.tabsList.findIndex(val => val.name === item.name);
+            //从数组中删除数据
+            state.tabsList.splice(index,1);
         }
     }
 }

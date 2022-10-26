@@ -1,5 +1,37 @@
 <template>
-<h1>我是user组件</h1>
+<div class="manage">
+    <div class="manage-header">
+        <el-button type="primary" @click="dialogVisible = true"><i class="el-icon-plus" style="margin-right：5px">新增</i></el-button>
+    </div>
+
+    <el-dialog title="新增用户" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
+        <!-- 用户的表单数据 -->
+        <el-form :inline="true" :label-position="labelPosition" ref="form" :model="form" label-width="80px">
+            <el-form-item label="姓名">
+                <el-input placeholder="请输入姓名" v-model="form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="年龄">
+                <el-input placeholder="请输入年龄" v-model="form.age"></el-input>
+            </el-form-item>
+            <el-form-item label="性别">
+                <el-select v-model="form.sex" placeholder="请选择性别">
+                    <el-option label="男" value="1"></el-option>
+                    <el-option label="女" value="0"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="出生日期">
+                <el-date-picker type="date" placeholder="选择日期" v-model="form.birth" style="width: 100%;"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="地址">
+                <el-input placeholder="请输入地址" v-model="form.addr"></el-input>
+            </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+    </el-dialog>
+</div>
 </template>
 
 <script>
@@ -9,27 +41,38 @@
 export default {
     //import 引入的组件需要注入到对象中才能使用
     components: {},
-    props: {},
     data() {
         //这里存放数据
-        return {};
+        return {
+            dialogVisible: false,
+            //表单标签对齐方式
+            labelPosition: 'right',
+            // 定义用户表单数据对象
+            form: {
+                name: '', //姓名
+                age: '', //年龄
+                sex: '', //性别
+                birth: '', //生日
+                addr: '', //地址
+            }
+        };
     },
-    //计算属性 类似于 data 概念
-    computed: {},
-    //监控 data 中的数据变化
-    watch: {},
     //方法集合
-    methods: {},
-    //生命周期 - 创建完成（可以访问当前 this 实例）
-    created() {},
-    //生命周期 - 挂载完成（可以访问 DOM 元素）
-    mounted() {},
-    beforeCreate() {}, //生命周期 - 创建之前
-    beforeMount() {}, //生命周期 - 挂载之前
-    beforeUpdate() {}, //生命周期 - 更新之前
-    updated() {}, //生命周期 - 更新之后
-    beforeDestroy() {}, //生命周期 - 销毁之前
-    destroyed() {}, //生命周期 - 销毁完成
-    activated() {}, //如果页面有 keep-alive 缓存功能，这个函数会触发
+    methods: {
+        handleClose(done) {
+            this.$confirm("确认关闭？")
+                .then((_) => {
+                    done();
+                })
+                .catch((_) => {});
+        },
+    }
 };
 </script>
+
+<style lang="less" scoped>
+// element-ui自动生成的class选择器，为我自己添加的图标设置间隙，可以直接使用+与空格形式直接显示文本的
+.el-icon-plus:before {
+    margin-right: 5px;
+}
+</style>

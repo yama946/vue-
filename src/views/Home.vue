@@ -1,64 +1,64 @@
 <template>
-<el-row>
-    <!-- 左侧部分 -->
-    <el-col :span="8" style="padding-right: 10px">
-        <el-card class="box-card">
-            <div class="user">
-                <img src="../assets/images/user.png" alt="">
-                <div class="userinfo">
-                    <p class="name">Admin</p>
-                    <p class="access">超级管理员</p>
+    <el-row>
+        <!-- 左侧部分 -->
+        <el-col :span="8" style="padding-right: 10px">
+            <el-card class="box-card">
+                <div class="user">
+                    <img src="../assets/images/user.png" alt="">
+                    <div class="userinfo">
+                        <p class="name">Admin</p>
+                        <p class="access">超级管理员</p>
+                    </div>
                 </div>
-            </div>
-            <div class="login-info">
-                <p>上次登陆的时间：<span>2019/12/03</span></p>
-                <p>上次登陆的地点：<span>河南</span></p>
-            </div>
-        </el-card>
-        <!-- 行内设置，卡片之间的间隔 -->
-        <el-card style="margin-top: 20px;height:460px">
-            <el-table :data="tableData" style="width: 100%">
-                <!-- 传统写法 -->
-                <!-- <el-table-column prop="name" label="品牌" >
-                </el-table-column>
-                <el-table-column prop="todayBuy" label="日销量" >
-                </el-table-column>
-                <el-table-column prop="monthBuy" label="月销量">
-                </el-table-column>
-                <el-table-column prop="totalBuy" label="总销量">
-                </el-table-column> -->
-                <!-- 使用vue循环，进行优化，动态生成 -->
-                <el-table-column v-for="(value, name) in tableLabel" :key="name" :prop="name" :label="value">
-                </el-table-column>
-            </el-table>
-        </el-card>
-    </el-col>
-    <!-- 右侧部分，将页面宽度看成24个栅格，16个栅格为2/3 -->
-    <el-col :span="16" style="padding-left: 10px">
-        <div class="num">
-            <el-card v-for="item in countData" :key="item.name" :body-style="{ display: 'flex', padding: 0 }">
-                <i class="icon" :class="`el-icon-${item.icon}`" v-bind:style="{ background: item.color }"></i>
-                <div class="detail">
-                    <p class="price">￥{{item.value}}</p>
-                    <p class="desc">{{item.name}}</p>
+                <div class="login-info">
+                    <p>上次登陆的时间：<span>2019/12/03</span></p>
+                    <p>上次登陆的地点：<span>河南</span></p>
                 </div>
             </el-card>
-        </div>
-        <el-card style="height: 280px">
-            <!-- 折线图区域 -->
-            <div ref="echarts1" style="height: 280px"></div>
-        </el-card>
-        <!-- 当前div作为一个容器 -->
-        <div class="graph">
-            <el-card style="height: 260px">
-                <div ref="echarts2" style="height: 260px"></div>
+            <!-- 行内设置，卡片之间的间隔 -->
+            <el-card style="margin-top: 20px;height:460px">
+                <el-table :data="tableData" style="width: 100%">
+                    <!-- 传统写法 -->
+                    <!-- <el-table-column prop="name" label="品牌" >
+                    </el-table-column>
+                    <el-table-column prop="todayBuy" label="日销量" >
+                    </el-table-column>
+                    <el-table-column prop="monthBuy" label="月销量">
+                    </el-table-column>
+                    <el-table-column prop="totalBuy" label="总销量">
+                    </el-table-column> -->
+                    <!-- 使用vue循环，进行优化，动态生成 -->
+                    <el-table-column v-for="(value, name) in tableLabel" :key="name" :prop="name" :label="value">
+                    </el-table-column>
+                </el-table>
             </el-card>
-            <el-card style="height: 260px">
-                <div ref="echarts3" style="height: 240px"></div>
+        </el-col>
+        <!-- 右侧部分，将页面宽度看成24个栅格，16个栅格为2/3 -->
+        <el-col :span="16" style="padding-left: 10px">
+            <div class="num">
+                <el-card v-for="item in countData" :key="item.name" :body-style="{ display: 'flex', padding: 0 }">
+                    <i class="icon" :class="`el-icon-${item.icon}`" v-bind:style="{ background: item.color }"></i>
+                    <div class="detail">
+                        <p class="price">￥{{item.value}}</p>
+                        <p class="desc">{{item.name}}</p>
+                    </div>
+                </el-card>
+            </div>
+            <el-card style="height: 280px">
+                <!-- 折线图区域 -->
+                <div ref="echarts1" style="height: 280px"></div>
             </el-card>
-        </div>
-    </el-col>
-</el-row>
+            <!-- 当前div作为一个容器 -->
+            <div class="graph">
+                <el-card style="height: 260px">
+                    <div ref="echarts2" style="height: 260px"></div>
+                </el-card>
+                <el-card style="height: 260px">
+                    <div ref="echarts3" style="height: 240px"></div>
+                </el-card>
+            </div>
+        </el-col>
+    </el-row>
 </template>
 
 <script>

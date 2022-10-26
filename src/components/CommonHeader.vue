@@ -3,6 +3,7 @@
     <div class="l-content">
         <el-button @click="handleMenu" icon="el-icon-menu" size="mini"></el-button>
         <!-- 面包屑 -->
+        <!-- <span class="text">首页</span> -->
         <el-breadcrumb separator="/">
             <el-breadcrumb-item v-for="item in tags" :key="item.path" :to="{ path: item.path }">
                 {{ item.label }}
@@ -86,7 +87,11 @@ export default {
         // element-ui自动生成的class属性选择器
 
         /deep/.el-breadcrumb__item {
+            &:first-child{
+                margin-left:14px;//也可以使用该属性选择器.el-button--mini进行调整边距，或者直接使用行内元素设置
+            }
             .el-breadcrumb__inner {
+
                 font-weight: normal;
 
                 //&表示并且，同时满足两个选择器
@@ -97,8 +102,12 @@ export default {
 
             &:last-child {
                 .el-breadcrumb__inner {
-                    color:chocolate;
+                    color: chocolate;
                 }
+            }
+
+            .el-breadcrumb__separator{
+                margin:0 0;
             }
         }
 
