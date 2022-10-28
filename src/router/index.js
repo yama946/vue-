@@ -7,6 +7,7 @@ import Main from '../views/Main'
 import Mall from '../views/Mall'
 import PageOne from '../views/PageOne'
 import PageTwo from '../views/PageTwo'
+import Login from '../views/Login'
 
 //安装路由功能
 Vue.use(VueRouter)
@@ -33,7 +34,13 @@ const routes = [
             { path: 'page2',name:'page2', component: PageTwo }//页面2
         ]
     },
-
+    //权限校验
+    {
+        //登陆页
+        path: '/login',
+        name: 'login',
+        component: Login,
+    }
 
 ]
 //第三步

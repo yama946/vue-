@@ -1,7 +1,8 @@
 import Mock from 'mockjs'
 export default {
+  // 权限验证
   getMenu: config => {
-    console.log(config);
+    console.log(config,'接收请求数据');
     const { username, password } = JSON.parse(config.body)
     console.log(JSON.parse(config.body))
     // 先判断用户是否存在
@@ -85,7 +86,7 @@ export default {
       return {
         code: -999,
         data: {
-          message: '密码错误'
+          message: '用户或密码错误'
         }
       }
     }

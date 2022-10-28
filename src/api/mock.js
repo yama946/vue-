@@ -43,5 +43,6 @@ mockjs.mock('/api/user/batch', 'post', userApi.batchremove)
 // mockjs.mock('/api/user/getUser', 'get', userApi.getUserList)
 //正则表达式拦截请求
 mockjs.mock(/api\/user\/getUser/, 'get', userApi.getUserList)
+
 // 权限相关
-mockjs.mock('/api/permission/getMenu/', 'post', permissionApi.getMenu)
+mockjs.mock('/api/permission/getMenu', 'post', permissionApi.getMenu)

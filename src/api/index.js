@@ -33,3 +33,8 @@ export const delUser = (data) =>{
 export const batchUser = (data) =>{
     return http.post('/user/batch',data);
 }
+
+//定义登陆请求接口
+export const getMenu = (data) => {
+    return http.post('/permission/getMenu',data);
+}
