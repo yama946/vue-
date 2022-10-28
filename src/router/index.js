@@ -32,7 +32,8 @@ const routes = [
             { path: 'page1',name:'page1', component: PageOne },//页面1
             { path: 'page2',name:'page2', component: PageTwo }//页面2
         ]
-    }
+    },
+
 
 ]
 //第三步
