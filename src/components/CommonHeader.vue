@@ -52,6 +52,10 @@ export default {
                 console.log('退出操作触发');
                 //清除token数据，并跳转页面
                 Cookie.remove('token');
+                //清除Cookie中的动态菜单数据menu
+                Cookie.remove('menu');
+
+                //路由跳转
                 this.$router.push('/login');
                 //消息提示
                 this.$message({

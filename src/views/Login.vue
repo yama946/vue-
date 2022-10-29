@@ -68,6 +68,16 @@ export default {
                             const { token } = data.data;
                             //3.将token存入cookie
                             Cookie.set('token', token);
+
+                            //获取菜单数据,存入store中
+                            // data.data.menu;
+                            //调用mutation中方法改变，store中state数据
+                            this.$store.commit('setMenu',data.data.menu);
+
+                            //动态注册路由，需要将路由实例传递进行操作
+                            this.$store.commit('changeRouter',this.$router);
+
+
                             //4.此时token存在，跳转页面
                             this.$router.push('/home');
                             //消息提示

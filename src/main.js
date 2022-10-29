@@ -27,8 +27,19 @@ router.beforeEach((to, from, next) => {
   }
 })
 
+
+/**
+ * 解决页面刷新，导致空白页，路由异常
+ * 原因：
+ *    每次刷新都会初始化vue实例导致路由失效，同时刷新又不再走注册路由的mutation方法，路由无法重新注册。
+ * 解决：
+ *    在vue实例中重新调用mutation中的方法，重新注册路由
+ */
 new Vue({
   router,//挂载router
   store,//挂载store，才能通过this获取实例
   render: h => h(App),
+  created(){
+    store.commit('changeRouter',router);
+  }
 }).$mount('#app')

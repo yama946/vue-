@@ -12,7 +12,7 @@
             <span slot="title">{{ item.label }}</span>
         </template>
         <!-- 点击事件，添加到group标签位置不生效 -->
-        <el-menu-item-group  v-for="subItem in item.children" :key="subItem.name">
+        <el-menu-item-group v-for="subItem in item.children" :key="subItem.name">
             <el-menu-item v-on:click="clickMenu(subItem)" :index="subItem.path">{{ subItem.label }}</el-menu-item>
         </el-menu-item-group>
     </el-submenu>
@@ -22,6 +22,7 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具 js，第三方插件 js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
+import Cookie from 'js-cookie';
 
 export default {
     //import 引入的组件需要注入到对象中才能使用
@@ -31,52 +32,59 @@ export default {
         //这里存放数据
         return {
             // isCollapse: false,
-            menuData: [{
-                    path: "/",
-                    name: "home",
-                    label: "首页",
-                    icon: "s-home",
-                    url: "Home/Home",
-                },
-                {
-                    path: "/mall",
-                    name: "mall",
-                    label: "商品管理",
-                    icon: "video-play",
-                    url: "MallManage/MallManage",
-                },
-                {
-                    path: "/user",
-                    name: "user",
-                    label: "用户管理",
-                    icon: "user",
-                    url: "UserManage/UserManage",
-                },
-                {
-                    label: "其他",
-                    icon: "location",
-                    children: [{
-                            path: "/page1",
-                            name: "page1",
-                            label: "页面1",
-                            icon: "setting",
-                            url: "Other/PageOne",
-                        },
-                        {
-                            path: "/page2",
-                            name: "page2",
-                            label: "页面2",
-                            icon: "setting",
-                            url: "Other/PageTwo",
-                        },
-                    ],
-                },
-            ],
+            //不能与计算属性共存
+            // menuData: [{
+            //         path: "/",
+            //         name: "home",
+            //         label: "首页",
+            //         icon: "s-home",
+            //         url: "Home/Home",
+            //     },
+            //     {
+            //         path: "/mall",
+            //         name: "mall",
+            //         label: "商品管理",
+            //         icon: "video-play",
+            //         url: "MallManage/MallManage",
+            //     },
+            //     {
+            //         path: "/user",
+            //         name: "user",
+            //         label: "用户管理",
+            //         icon: "user",
+            //         url: "UserManage/UserManage",
+            //     },
+            //     {
+            //         label: "其他",
+            //         icon: "location",
+            //         children: [{
+            //                 path: "/page1",
+            //                 name: "page1",
+            //                 label: "页面1",
+            //                 icon: "setting",
+            //                 url: "Other/PageOne",
+            //             },
+            //             {
+            //                 path: "/page2",
+            //                 name: "page2",
+            //                 label: "页面2",
+            //                 icon: "setting",
+            //                 url: "Other/PageTwo",
+            //             },
+            //         ],
+            //     },
+            // ],
         };
     },
     //计算属性 类似于 data 概念
     //这里，菜单可能会根据权限调用接口变化，因此我们使用计算属性，变化时重新执行方法
     computed: {
+        //从store中获取动态菜单数据
+        menuData() {
+            console.log(this.$store.state.tab.menu, '动态菜单数据')
+            //判断数据，如果缓存中没有，到store中获取
+            return JSON.parse(Cookie.get('menu')) || this.$store.state.tab.menu;
+        },
         //没有子菜单
         noChildren() {
             return this.menuData.filter((item) => !item.children);
@@ -86,9 +94,10 @@ export default {
             return this.menuData.filter((item) => item.children);
         },
         //从store中获取数据
-        isCollapse () {
+        isCollapse() {
             return this.$store.state.tab.isCollapse;
-        }
+        },
+
     },
     //方法集合
     methods: {
@@ -115,13 +124,13 @@ export default {
              * $route:表示当前页面的路由
              * $router:表示整个路由实例
              */
-            if(this.$route.path !== item.path && !(this.$route.path==='/home' && item.path === '/')){
-                console.log(this.$route.path);//输出是uri：/home
+            if (this.$route.path !== item.path && !(this.$route.path === '/home' && item.path === '/')) {
+                console.log(this.$route.path); //输出是uri：/home
                 this.$router.push(item.path);
             }
             //点击菜单，触发面包屑数据更改，通过mutation方法修改数据
             //其中第二个参数，就是传递的参数
-            this.$store.commit('selectMenu',item);
+            this.$store.commit('selectMenu', item);
         }
     },
 };
@@ -135,24 +144,23 @@ export default {
     // min-height: 400px;
     min-height: 100vh;
 }
+
 // 这个el-menu属性值的来源是哪里，在哪里定义，而不是到浏览器控制台获取
 .el-menu {
     // height: 100vh;
     height: 100%;
+
     h3 {
-       color: #fff;
-       text-align: center;
-       line-height: 48px;
-       font-size: 18px;
-       font-weight: 400;
+        color: #fff;
+        text-align: center;
+        line-height: 48px;
+        font-size: 18px;
+        font-weight: 400;
     }
 }
-</style>
-
-
-<style lang="less" scoped>
-    .el-menu {
-        // 去除白边
-        border-right: none;
-    }
+</style><style lang="less" scoped>
+.el-menu {
+    // 去除白边
+    border-right: none;
+}
 </style>
